@@ -22,10 +22,9 @@
         <div v-for="item in arr">
             <h2 v-text="item"></h2>
         </div>
-        <p v-text="obj.testA"></p>
     </div>
-    <script src='../dist/tinyVue.js'></script>
-    <!-- <script src='http://cdn.bootcss.com/vue/1.0.26/vue.js'></script> -->
+    <!-- <script src='../dist/tinyVue.js'></script> -->
+    <script src='http://cdn.bootcss.com/vue/1.0.26/vue.js'></script>
     <script>
         var opts = {
             el: '#app',
@@ -39,7 +38,7 @@
                 this.arr.push(7);
             }
         };
-        var mvvm = new TinyVue(opts);
+        var mvvm = new Vue(opts);
 
         console.log('mvvm: ', mvvm);
     </script>
