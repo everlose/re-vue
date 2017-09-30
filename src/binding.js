@@ -13,7 +13,7 @@ const def = Object.defineProperty;
 let bindingId = 0;
 
 export default class Binding {
-    constructor (vm, key, isComputed=false) {
+    constructor(vm, key, isComputed = false) {
         this.vm = vm;
         this.key = key;
         this.isComputed = isComputed;
@@ -28,7 +28,7 @@ export default class Binding {
          */
         this.watcher = null;
         /**
-         * init 
+         * init
          */
         /**
          * vm不存在的Binding可watch其它Binding从而触发更新
@@ -44,7 +44,7 @@ export default class Binding {
     defineReactive () {
         if (this.isComputed) {
             this.defineComputedProperty();
-            return ;
+            return;
         }
 
         let self = this;
@@ -65,8 +65,8 @@ export default class Binding {
             let lastKey = path.splice(path.length - 1);
             obj = objectGet(this.vm, path.join('.'));
             key = lastKey[0];
-    
-            self.value = isObj ? objectGet(this.vm, key) : ''; 
+
+            self.value = isObj ? objectGet(this.vm, key) : '';
         }
 
         def(obj, key, {
@@ -77,23 +77,24 @@ export default class Binding {
             set (value) {
                 if (value !== self.value) {
                     self.oldValue = self.value;
+
                     /**
                      * 考虑到原始类型与赋值类型的不同
                      */
-                    if (typeof value === 'string') {
+                    if (isArray) {
                         self.value = value;
-                        self.update(value);
-                    } else if (isArray) {
-                        self.value = value;
-
-                        arrayObserver(self.value, ()=>{
+                        // 数组被push，pop等方法操作的响应
+                        arrayObserver(self.value, () => {
                             self.update();
                         });
+                        // 数组自身被赋值为另一个值的响应。
                         self.update(self.value);
                     } else if (isObj) {
-                        for (let prop in value) {
-                            self.value[prop] = value[prop];
-                        } 
+                        // self.value = value;
+                        let keys = Object.keys(value);
+                        keys.forEach(function (key) {
+                            self.value[key] = value[key];
+                        });
                     } else {
                         self.value = value;
                         self.update(value);
@@ -111,7 +112,7 @@ export default class Binding {
             self = this;
 
         def(obj, key, {
-            get () {
+            get() {
                 let getter = self.vm._opts.computed[key];
                 if (isFunc(getter)) {
                     self.value = getter.call(self.vm);
@@ -119,13 +120,13 @@ export default class Binding {
                     return self.value;
                 }
             },
-            set () {
+            set() {
                 //console.warn('computed property is readonly.');
             }
         });
     }
 
-    update (value=null) {
+    update (value = null) {
         if (value === null) {
             value = this.value;
         }
@@ -155,8 +156,8 @@ export default class Binding {
         if (this.parent) {
             this.parent.refresh();
         }
-        
-        this.watches.forEach((cb)=>{
+
+        this.watches.forEach((cb) => {
             cb.call(this.vm, this.value, this.oldValue);
         });
     }
@@ -174,7 +175,7 @@ export default class Binding {
     }
 
     remove (childBinding) {
-        this.children = this.children.filter((child)=>{
+        this.children = this.children.filter((child) => {
             return child.id != childBinding.id;
         })
     }
@@ -185,8 +186,9 @@ export default class Binding {
     }
 
     _updateChildren () {
-        this.children.forEach((child)=>{
+        this.children.forEach((child) => {
             child.update(this.value);
         });
     }
 }
+

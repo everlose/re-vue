@@ -22,6 +22,8 @@
         <div v-for="item in arr">
             <h2 v-text="item"></h2>
         </div>
+        <p v-text="obj.testA"></p>
+        <p v-text="obj.testB"></p>
     </div>
     <!-- <script src='../dist/tinyVue.js'></script> -->
     <script src='http://cdn.bootcss.com/vue/1.0.26/vue.js'></script>
@@ -35,7 +37,9 @@
                 }
             },
             ready () {
-                this.arr.push(7);
+                this.arr = [4,5,6];
+                this.obj.testA = '123123123';
+                this.obj = {testB: '441'};
             }
         };
         var mvvm = new Vue(opts);

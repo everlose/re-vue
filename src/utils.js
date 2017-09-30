@@ -111,7 +111,7 @@ export function objectMap (obj = {}, cb = () => {}) {
 export function objectGet (obj, path = '') {
     path = path.split('.');
 
-    if (typeof obj[path[0]] === undefined) {
+    if (obj[path[0]] === void 0) {
         obj[path[0]] = {};
     }
 

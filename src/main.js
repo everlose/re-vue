@@ -28,7 +28,7 @@ import {
  */
 let vmId = 0;
 export default class Main {
-    constructor (opts={}, parent) {
+    constructor (opts = {}, parent) {
         /**
          * this.$el:  根节点
          * _bindings: 指令与data关联的桥梁
@@ -254,11 +254,9 @@ export default class Main {
 
         if (el.nodeType === 8) {
             return ;
-        }
-
-        if (el.nodeType === 3) {
+        } else if (el.nodeType === 3) {
             self._compileTextNode(el);
-        } else if (el.attributes && el.attributes.length) {
+        } else if (el.nodeType === 1 && el.attributes && el.attributes.length) {
             getAttributes(el.attributes).forEach(function (attr) {
                 let directive = DirectiveParser.parse(attr.name, attr.value);
 
@@ -274,7 +272,7 @@ export default class Main {
         }
 
         let len = el.childNodes.length;
-        if (isCompiler&&len) {
+        if (isCompiler && len) {
             el.index = 0;
             for (; el.index < el.childNodes.length; el.index++) {
                 /**
@@ -468,17 +466,3 @@ function getComponents (vm) {
         return vm.components;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

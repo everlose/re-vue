@@ -7,7 +7,7 @@ export default {
     /**
      * 单独进行编译
      */
-    isBlock: true,  
+    isBlock: true,
     bind () {
         this.parent = this.el.parentNode;
         this.startRef = document.createComment('Start of v-for-directive');
@@ -24,13 +24,13 @@ export default {
 
         this.parent.removeChild(this.el);
         this.parent.index++;
-        
+
         this.childElements = [];
         this.childVms = []
     },
-    update (arr=[]) {
+    update (arr = []) {
         this.unbind();
-        arr.forEach((item, index)=>{
+        arr.forEach((item, index) => {
             this.createChildInstance(item, index);
         });
     },
@@ -59,7 +59,7 @@ export default {
     },
     unbind () {
         if (this.childVms.length != 0) {
-            this.childVms.forEach((child)=>{
+            this.childVms.forEach((child) => {
                 child.$destroy();
             });
         }
