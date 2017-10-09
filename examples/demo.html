@@ -23,7 +23,7 @@
             <h2 v-text="item"></h2>
         </div>
         <p v-text="obj.testA"></p>
-        <p v-text="obj.testB"></p>
+        <p v-text="obj1.testB"></p>
     </div>
     <script src='../dist/tinyVue.js'></script>
     <!-- <script src='http://cdn.bootcss.com/vue/1.0.26/vue.js'></script> -->
@@ -34,12 +34,15 @@
                 arr: [1,2,3,4,5,6],
                 obj: {
                     testA: 'hello world'
+                },
+                obj1: {
+                    testB: 'world hello'
                 }
             },
             ready () {
                 this.arr.push(7);
                 this.obj.testA = '123123123';
-                this.obj = {testB: '441'};
+                this.obj1 = {testC: '441'};
             }
         };
         var mvvm = new TinyVue(opts);

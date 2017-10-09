@@ -321,6 +321,7 @@ export default class Main {
             let computedKey = key.split('.')[0];
             binding = this._getBinding(this, computedKey);
             processBinding(computedKey);
+            // binding.directives.push(directive);
             if (binding.isComputed) {
                 binding.directives.push(directive);
             } else {

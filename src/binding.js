@@ -34,7 +34,7 @@ export default class Binding {
          * vm不存在的Binding可watch其它Binding从而触发更新
          */
         if (this.vm) {
-            this.defineReactive();
+            this.isComputed ? this.defineComputedProperty() : this.defineReactive();
         }
 
         this.id = bindingId++;
@@ -42,11 +42,6 @@ export default class Binding {
 
 
     defineReactive () {
-        if (this.isComputed) {
-            this.defineComputedProperty();
-            return;
-        }
-
         let self = this;
         let path = this.key.split('.');
         let len = path.length;
@@ -59,15 +54,13 @@ export default class Binding {
         if (len === 1) {
             obj = this.vm;
             key = this.key;
-            self.value = isObj ? objectGet(this.vm, key) : '';
-
         } else {
             let lastKey = path.splice(path.length - 1);
             obj = objectGet(this.vm, path.join('.'));
             key = lastKey[0];
-
-            self.value = isObj ? objectGet(this.vm, key) : '';
         }
+
+        self.value = isObj ? objectGet(this.vm, key) : '';
 
         def(obj, key, {
             get () {
@@ -91,6 +84,8 @@ export default class Binding {
                         self.update(self.value);
                     } else if (isObj) {
                         // self.value = value;
+                        // debugger;
+                        // self.defineReactive();
                         let keys = Object.keys(value);
                         keys.forEach(function (key) {
                             self.value[key] = value[key];
