@@ -16,6 +16,7 @@ export default class Binding {
     constructor(vm, key, isComputed = false) {
         this.vm = vm;
         this.key = key;
+        this.value = '';
         this.isComputed = isComputed;
         this.watches = [];
 
@@ -60,7 +61,7 @@ export default class Binding {
             key = lastKey[0];
         }
 
-        self.value = isObj ? objectGet(this.vm, key) : '';
+        self.value = objectGet(this.vm, key);
 
         def(obj, key, {
             get () {
@@ -84,7 +85,6 @@ export default class Binding {
                         self.update(self.value);
                     } else if (isObj) {
                         // self.value = value;
-                        // debugger;
                         // self.defineReactive();
                         let keys = Object.keys(value);
                         keys.forEach(function (key) {
